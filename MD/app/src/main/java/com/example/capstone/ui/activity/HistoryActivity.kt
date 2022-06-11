@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,9 @@ class HistoryActivity : AppCompatActivity() {
         historyViewModel.listHistory.observe(this) {
             showHistoryRecyclerList(it)
         }
+        historyViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
     }
 
     private fun showHistoryRecyclerList(history: List<ListHistoryItem>) {
@@ -49,6 +53,16 @@ class HistoryActivity : AppCompatActivity() {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(context, 1)
             adapter = listFollowersAdapter
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.apply {
+            visibility = if (isLoading) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
     }
 

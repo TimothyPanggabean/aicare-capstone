@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.capstone.data.local.UserSession
@@ -19,7 +20,11 @@ class TestModelViewModel(private val pref: UserSession) : ViewModel() {
 
     var userToken : LiveData<String> = pref.getToken().asLiveData()
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun uploadResult(token: String, label: String, percentage: Float, context: Context) {
+        _isLoading.value = true
         val client = ApiConfig.getApiService().uploadResult("Bearer " + token, label, percentage)
         client.enqueue(object : Callback<UploadResponse> {
             override fun onResponse(
@@ -27,6 +32,7 @@ class TestModelViewModel(private val pref: UserSession) : ViewModel() {
                 response: Response<UploadResponse>
             ) {
                 val responseBody = response.body()
+                _isLoading.value = false
                 if (response.isSuccessful && responseBody != null) {
                     if (responseBody.error == false) {
                         println("harusnya success")
@@ -45,6 +51,7 @@ class TestModelViewModel(private val pref: UserSession) : ViewModel() {
             }
 
             override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
+                _isLoading.value = false
                 Log.e(ContentValues.TAG, "onFailure: ${t.message}")
             }
 
