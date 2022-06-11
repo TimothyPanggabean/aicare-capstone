@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+CC/node_modules
+CC/.env
+CC/cloud-storage-key.json
+CC/service-account-key.json
