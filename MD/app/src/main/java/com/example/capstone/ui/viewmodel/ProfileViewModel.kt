@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.capstone.data.local.UserSession
 
-class ProfileViewModel(private val pref: UserSession) : ViewModel() {
+class ProfileViewModel(pref: UserSession) : ViewModel() {
     var userToken : LiveData<String> = pref.getToken().asLiveData()
     var userName : LiveData<String> = pref.getName().asLiveData()
     var userEmail : LiveData<String> = pref.getEmail().asLiveData()

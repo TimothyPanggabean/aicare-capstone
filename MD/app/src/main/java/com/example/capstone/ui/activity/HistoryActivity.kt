@@ -1,14 +1,10 @@
 package com.example.capstone.ui.activity
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.capstone.R
 import com.example.capstone.data.local.UserSession
 import com.example.capstone.data.remote.pojo.ListHistoryItem
 import com.example.capstone.databinding.ActivityHistoryBinding
@@ -27,6 +23,7 @@ class HistoryActivity : AppCompatActivity() {
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = "History"
         val pref = UserSession.getInstance(dataStore)
 
         historyViewModel =

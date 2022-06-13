@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
 import com.example.capstone.data.remote.pojo.ListHistoryItem
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ListHistoryAdapter(

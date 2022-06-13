@@ -2,7 +2,6 @@ package com.example.capstone.ui.viewmodel
 
 import android.content.ContentValues
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.capstone.data.local.UserSession
 import com.example.capstone.data.remote.api.ApiConfig

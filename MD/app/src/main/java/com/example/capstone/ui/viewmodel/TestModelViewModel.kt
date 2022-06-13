@@ -11,12 +11,11 @@ import androidx.lifecycle.asLiveData
 import com.example.capstone.data.local.UserSession
 import com.example.capstone.data.remote.api.ApiConfig
 import com.example.capstone.data.remote.pojo.UploadResponse
-import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TestModelViewModel(private val pref: UserSession) : ViewModel() {
+class TestModelViewModel(pref: UserSession) : ViewModel() {
 
     var userToken : LiveData<String> = pref.getToken().asLiveData()
 

@@ -1,24 +1,24 @@
 package com.example.capstone.ui.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstone.data.local.UserSession
 import com.example.capstone.databinding.ActivityProfileBinding
 import com.example.capstone.ui.viewmodel.ProfileViewModel
 import com.example.capstone.ui.viewmodel.factory.ViewModelFactory
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileActivity : AppCompatActivity() {
 
-    lateinit var bottomNavigationView: BottomNavigationView
     lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.title = "Profile"
 
         val pref = UserSession.getInstance(dataStore)
 

@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HistoryViewModel(private val pref: UserSession) : ViewModel() {
+class HistoryViewModel(pref: UserSession) : ViewModel() {
     var userToken : LiveData<String> = pref.getToken().asLiveData()
 
     private val _listHistory = MutableLiveData<List<ListHistoryItem>>()

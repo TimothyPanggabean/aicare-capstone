@@ -37,6 +37,8 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = "Register"
+
         registerButton = binding.registerButton
         emailEditText = binding.emailEditText
         passwordEditText = binding.passwordEditText

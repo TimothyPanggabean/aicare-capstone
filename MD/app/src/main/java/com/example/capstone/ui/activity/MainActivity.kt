@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.title = "AiCare"
         val homeFragment = HomeFragment()
         val pref = UserSession.getInstance(dataStore)
         val mainViewModel = ViewModelProvider(this, ViewModelFactory(pref, this))[MainViewModel::class.java]
@@ -58,15 +59,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setCurrentFragment(fragment: Fragment) =
+    private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
             commit()
         }
 
     companion object {
-        private const val DURATION = 200L
-        private const val ALPHA = 1f
         val emailRegex: Regex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+\$")
         val phoneRegex: Regex = Regex("^(^\\+62|62|^08)(\\d{3,4}-?){2}\\d{3,4}\$")
     }

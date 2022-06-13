@@ -28,10 +28,6 @@ import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import java.io.File
-import java.nio.ByteBuffer
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class TestModelActivity : AppCompatActivity() {
@@ -45,22 +41,18 @@ class TestModelActivity : AppCompatActivity() {
     private lateinit var normalOutput: TextView
 
     private lateinit var uploadButton: Button
-    private var modelFile: File? = null
 
     private val GALLERY_REQUEST_CODE = 123
 
     private lateinit var testModelViewModel: TestModelViewModel
-
-    val timeStamp: String = SimpleDateFormat(
-        Companion.FILENAME_FORMAT,
-        Locale.US
-    ).format(System.currentTimeMillis())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTestModelBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        supportActionBar?.title = "Model"
 
         imageView = binding.imageView
         button = binding.btnCaptureImage
@@ -94,7 +86,7 @@ class TestModelActivity : AppCompatActivity() {
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
                 intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 onresult.launch(intent)
-            }else {
+            } else {
                 requestPermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
@@ -108,7 +100,6 @@ class TestModelActivity : AppCompatActivity() {
         testModelViewModel = ViewModelProvider(this, ViewModelFactory(pref, this))[TestModelViewModel::class.java]
     }
 
-    //request camera permission
     private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){ granted->
         if (granted){
             takePicturePreview.launch(null)
@@ -117,7 +108,6 @@ class TestModelActivity : AppCompatActivity() {
         }
     }
 
-    //launch camera and take picture
     private val takePicturePreview = registerForActivityResult(ActivityResultContracts.TakePicturePreview()){ bitmap->
         if(bitmap != null){
             imageView.setImageBitmap(
@@ -128,7 +118,6 @@ class TestModelActivity : AppCompatActivity() {
         }
     }
 
-    //to get image from gallery
     private val onresult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
         Log.i("TAG", "This is the result: ${result.data} ${result.resultCode}")
         onResultReceived(GALLERY_REQUEST_CODE,result)
@@ -160,9 +149,6 @@ class TestModelActivity : AppCompatActivity() {
         val newBitmap = Bitmap.createScaledBitmap(
             bitmap, 512, 512, true
         )
-//        val buffer = ByteBuffer.allocate(1024 * 1024 * 3)
-//        buffer.rewind()
-//        newBitmap.copyPixelsToBuffer(buffer)
 
         val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 512, 512, 3), DataType.FLOAT32)
 
@@ -173,7 +159,7 @@ class TestModelActivity : AppCompatActivity() {
                     512,
                     ResizeOp.ResizeMethod.BILINEAR
                 )
-            ) //.add(new NormalizeOp(127.5f, 127.5f))
+            )
             .build()
 
         var tImage = TensorImage(DataType.FLOAT32)
@@ -181,7 +167,6 @@ class TestModelActivity : AppCompatActivity() {
         tImage.load(newBitmap)
         tImage = imageProcessor.process(tImage)
 
-//        inputFeature0.loadBuffer(buffer)
         inputFeature0.loadBuffer(tImage.buffer)
 
         val outputs = aiCareModel.process(inputFeature0)
@@ -226,7 +211,4 @@ class TestModelActivity : AppCompatActivity() {
 
     }
 
-    companion object {
-        private const val FILENAME_FORMAT = "dd-MMM-yyyy"
-    }
 }
